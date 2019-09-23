@@ -16,7 +16,7 @@ def findArt():
     songlink = enter.get()
     enter.delete(0, END)
 
-    if (len(songlink) != 53) or (stringIsLink(songlink)==False):
+    if (len(songlink) > 79) or (stringIsLink(songlink)==False):
         status_label.config(text="Invalid Input")
         print("Invalid Input")
     else:
@@ -24,7 +24,7 @@ def findArt():
             page = urllib.request.urlopen(songlink)
             page = page.read().decode("utf-8")
             text = str(page.split("\n"))
-            artlink = ""  
+            artlink = ""     
 
             #searches for the image link
             if "https://i.scdn.co/image/" in text:
@@ -35,15 +35,16 @@ def findArt():
                 #saves the file
                 filename = artlink.split('/')[-1]
                 #If the art was already saved
-                if os.path.exists('C:/Users/Amber2/Pictures/Song Art/'+filename+".jpg"):
+                if os.path.exists('C:/Users/Amber/Pictures/Album Art/'+filename+".jpg"):
                     status_label.config(text="You already saved this art. File name copied to clipboard.")
                     master.clipboard_append(filename+".jpg")
                 else:
                     try:
-                        urllib.request.urlretrieve(artlink, 'C:/Users/Amber2/Pictures/Song Art/'+filename+".jpg")
+                        urllib.request.urlretrieve(artlink, 'C:/Users/Amber/Pictures/Album Art/'+filename+".jpg")
                         #checks to make sure it saved
-                        if os.path.exists('C:/Users/Amber2/Pictures/Song Art/'+filename+".jpg"):
+                        if os.path.exists('C:/Users/Amber/Pictures/Album Art/'+filename+".jpg"):
                             status_label.config(text="Success. File name copied to clipboard.")
+                            master.clipboard_clear()
                             master.clipboard_append(filename+".jpg")
                         else:
                             status_label.config(text="Failed to save album art")
@@ -52,7 +53,7 @@ def findArt():
             else:
                 status_label.config(text="Invalid input, or broken link")
         except:
-            status_label.config(text="Invalid input, or broken link")    
+            status_label.config(text="excptInvalid input, or broken link")    
         
         #webbrowser.open(artlink)
 
